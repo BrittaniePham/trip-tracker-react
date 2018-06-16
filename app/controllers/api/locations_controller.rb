@@ -34,11 +34,11 @@ class Api::LocationsController < ApplicationController
 
   private
     def set_trip
-      @trip = Trip.find(params[:id])
+      @trip = Trip.find(params[:trip_id])
     end
 
     def set_location
-      @location = Location.find(params[:location_id])
+      @location = Location.find(params[:id])
     end
 
     def location_params

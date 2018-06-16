@@ -8,15 +8,13 @@
       name: Faker::Address.city
     )
 
-    1.times do
-      Address.create(
-        location_id: @location,
-        street_name: Faker::Address.street_address,
-        city: Faker::Address.city,
-        state: Faker::Address.state,
-        zip: Faker::Address.zip_code
-      )
-    end
+    @location.create_address(
+      location_id: @location,
+      street_name: Faker::Address.street_address,
+      city: Faker::Address.city,
+      state: Faker::Address.state,
+      zip: Faker::Address.zip_code
+    )
   end
 end
 
