@@ -1,5 +1,4 @@
 import React from 'react';
-// import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Location from './Location'
 
@@ -13,7 +12,6 @@ class Locations extends React.Component {
 
   resetLocations = (id) => {
     const { locations } = this.state
-    const { location } = this.props
     this.setState({
       locations: locations.filter( l => l.id !== id )
     })
