@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import TripForm from './TripForm'
-import {Button} from 'semantic-ui-react';
 
 class Trips extends React.Component {
   state = { editing: false, trips: [] }
@@ -42,9 +41,9 @@ class Trips extends React.Component {
       })
   }
 
-  editTrip = (id) => {
-    this.setState({ editing: !this.state.editing })
-    axios.put(`/api/trips/${id}`)
+  editTrip = (t) => {
+    const {title} = t
+    axios.put(`/api/trips/${t.id}`)
       .then( res => {
         this.setState({ title: res.data.title })
       })
@@ -53,20 +52,24 @@ class Trips extends React.Component {
       })
   }
 
+  toggleEdit = () => {
+    this.setState({ editing: !this.state.editing })
+  }
+
   render() {
     const { trips } = this.state;
-    // if(this.state.editing)
-    //   return(
-    //     <div>
-    //       <input 
-    //         type='text' 
-    //         value={this.state.title} 
-    //         onChange={this.handleChange} 
-    //       />
-    //       <button onClick={this.editTrip}>Save</button>
-    //     </div>
-    //     )
-    // else
+    if(this.state.editing)
+      return(
+        <div>
+          <input 
+            type='text' 
+            value={this.state.title} 
+            onChange={this.handleChange} 
+          />
+          <button onClick={this.editTrip}>Save</button>
+        </div>
+        )
+    else
       return(
         <ul>
           <h2>Trips</h2>
@@ -75,7 +78,7 @@ class Trips extends React.Component {
             <li key={t.id}>
               <Link to={`/trips/${t.id}`}>{t.title} </Link>
               <button onClick={() => this.deleteTrip(t.id)}>Delete</button>
-              {/* <button onClick={() => this.editTrip(t.id)}>Edit</button> */}
+              {/* <button onClick={() => this.editTrip(t)}>Edit</button> */}
             </li>
           )}
         </ul>
