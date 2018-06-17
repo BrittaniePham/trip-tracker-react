@@ -12,6 +12,17 @@ class Trip extends React.Component {
       })
   }
 
+  // deleteTrip = () => {
+  //   let id = this.props.trip.id
+  //   axios.delete(`/api/trips/${id}`)
+  //     .then( res => {
+  //       this.props.resetTrips(id)
+  //     })
+  //     .catch( err => {
+  //       console.log(err)
+  //     })
+  // }
+
   render() {
     return (
       <div>

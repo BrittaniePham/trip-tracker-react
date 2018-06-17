@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import TripForm from './TripForm'
+import {Button} from 'semantic-ui-react';
 
 class Trips extends React.Component {
   state = { trips: [] }
@@ -24,6 +25,24 @@ class Trips extends React.Component {
       })
   }
 
+  resetTrips = (id) => {
+    const { trips } = this.state
+    this.setState({
+      trips: trips.filter( t => t.id !== id )
+    })
+  }
+
+  deleteTrip = (id) => {
+    axios.delete(`/api/trips/${id}`)
+      .then( res => {
+        this.resetTrips(id)
+        debugger
+      })
+      .catch( err => {
+        console.log(err)
+      })
+  }
+
   render() {
     const { trips } = this.state;
     return(
@@ -32,7 +51,8 @@ class Trips extends React.Component {
         <TripForm submit={this.submit}/>
         { trips.map ( t =>
           <li key={t.id}>
-            <Link to={`/trips/${t.id}`}>{t.title}</Link>
+            <Link to={`/trips/${t.id}`}>{t.title} </Link>
+            <button onClick={() => this.deleteTrip(t.id)}>Delete</button>
           </li>
         )}
       </ul>
