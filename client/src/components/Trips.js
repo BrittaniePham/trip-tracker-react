@@ -5,7 +5,7 @@ import TripForm from './TripForm'
 import {Button} from 'semantic-ui-react';
 
 class Trips extends React.Component {
-  state = { trips: [] }
+  state = { editing: false, trips: [] }
 
   componentDidMount() {
     axios.get('/api/trips')
@@ -36,7 +36,17 @@ class Trips extends React.Component {
     axios.delete(`/api/trips/${id}`)
       .then( res => {
         this.resetTrips(id)
-        debugger
+      })
+      .catch( err => {
+        console.log(err)
+      })
+  }
+
+  editTrip = (id) => {
+    this.setState({ editing: !this.state.editing })
+    axios.put(`/api/trips/${id}`)
+      .then( res => {
+        this.setState({ title: res.data.title })
       })
       .catch( err => {
         console.log(err)
@@ -45,18 +55,31 @@ class Trips extends React.Component {
 
   render() {
     const { trips } = this.state;
-    return(
-      <ul>
-        <h2>Trips</h2>
-        <TripForm submit={this.submit}/>
-        { trips.map ( t =>
-          <li key={t.id}>
-            <Link to={`/trips/${t.id}`}>{t.title} </Link>
-            <button onClick={() => this.deleteTrip(t.id)}>Delete</button>
-          </li>
-        )}
-      </ul>
-    )
+    // if(this.state.editing)
+    //   return(
+    //     <div>
+    //       <input 
+    //         type='text' 
+    //         value={this.state.title} 
+    //         onChange={this.handleChange} 
+    //       />
+    //       <button onClick={this.editTrip}>Save</button>
+    //     </div>
+    //     )
+    // else
+      return(
+        <ul>
+          <h2>Trips</h2>
+          <TripForm submit={this.submit}/>
+          { trips.map ( t =>
+            <li key={t.id}>
+              <Link to={`/trips/${t.id}`}>{t.title} </Link>
+              <button onClick={() => this.deleteTrip(t.id)}>Delete</button>
+              {/* <button onClick={() => this.editTrip(t.id)}>Edit</button> */}
+            </li>
+          )}
+        </ul>
+      )
   }
 }
 
