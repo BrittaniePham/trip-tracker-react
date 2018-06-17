@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
-import Location from './Location'
+import Location from './Location';
+import LocationForm from './LocationForm';
 
 class Locations extends React.Component {
   state = { locations: [] }
@@ -27,10 +28,26 @@ class Locations extends React.Component {
       })
   }
 
+  submit = ({ name, street_name, city, state, zip }) => {
+    const location = { name }
+    const address = { street_name, city, state, zip }
+    const { locations } = this.state
+    axios.post(`/api/trips/${this.props.id}/locations`, { location, address })
+      .then( res => {
+        this.setState({
+          locations: [...locations, res.data],
+        })
+      })
+      .catch( e => { 
+        console.log(e)
+      })
+  }
+
   render() {
     const { locations } = this.state;
     return(
       <ul>
+        <LocationForm submit={this.submit}/>
         { locations.map ( l =>
           <li key={l.id}>
             <Location location={l} />

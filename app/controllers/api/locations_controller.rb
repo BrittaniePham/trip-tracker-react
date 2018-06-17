@@ -12,8 +12,9 @@ class Api::LocationsController < ApplicationController
 
   def create
     location = @trip.locations.new(location_params)
-
+    
     if location.save
+      address = location.create_address(address_params) 
       render json: location
     else
       render json: location.errors, status: 422
@@ -43,5 +44,9 @@ class Api::LocationsController < ApplicationController
 
     def location_params
       params.require(:location).permit(:name)
+    end
+
+    def address_params
+      params.require(:address).permit(:street_name, :city, :state, :zip)
     end
 end
